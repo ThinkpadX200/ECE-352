@@ -1,0 +1,166 @@
+(*
+Richard Coffey
+rrcoffe
+ECE-352
+sde2.caml
+*)
+
+
+
+(**
+Prototype: get_table_values_cell([i;j],table)
+Input(s): tuple of ([<column>;<row>], table)
+Returned Value: cell with string values
+Side Effects: none
+Signature: val get_table_values_cell : int list * ’a list list -> ’a = <fun>
+*)
+
+
+
+let get_table_string i lst = 
+    if lst = [] then []
+    else List.nth lst (i);;
+
+
+let get_table_values_cell(place,table) =
+    if table = [] then []
+    else get_table_string (List.hd place-1) (List.nth table (List.hd (List.tl place) - 1));; 
+
+
+
+
+(**
+Prototype: cell_products [cell1;cell2]
+Input(s): list containing 2 cells
+Returned Value: resultant list of strings
+Side Effects: none
+Signature: val cell_products : string list list -> string list = <fun>
+*)
+
+let rec one_product nt cell = 
+    if cell = [] then []
+    else (String.concat "" (List.append [nt] ([List.hd cell]))) :: one_product nt (List.tl cell);;
+
+let rec cell_products([cell1;cell2]) =   
+    if cell1 = [] then []
+    else if cell2 = [] then []
+    else ((one_product (List.hd cell1) cell2) @ cell_products([(List.tl cell1); cell2]));;
+
+
+
+(**
+Prototype: form_row1_cell(element,productions)
+Input(s): tuple of single terminal element, productions list
+Returned Value: corresponding cell in first row of CYK table
+Side Effects: none
+Signature: val form_row1_cell : ’a * ’a list list -> ’a list = <fun>
+Notes: Forms row 1 cells of CYK table as a special case.
+*)
+
+
+let rec form_row1_cell(element,productions) =
+   (* if element = [] then []*)
+    if productions = [] then []
+    else 
+        if (List.hd(List.tl(List.hd productions))) = element then List.hd(List.hd productions) :: form_row1_cell(element, (List.tl productions))
+        else form_row1_cell(element, (List.tl productions));;
+
+
+(**
+Prototype: equiv(ca, cb)
+Inputs: tuple of 2 cells
+Returned Value: true or false
+Side Effects: none
+Signature: val equiv : ’a list * ’a list -> bool = <fun>
+*)
+
+let rec sort lst = match lst with
+    [] -> []
+    | head :: tail -> put head (sort tail)
+and put rem lst = match lst with
+    [] -> [rem]
+    | head :: tail -> if rem <= head then rem :: lst else head :: put rem tail;;
+
+let rec equiv(ca, cb) = match sort(ca), sort(cb) with
+    | [], [] -> true
+    | [], _ -> false
+    | _, [] -> false
+    | x::xt, y::yt -> x = y && equiv (xt, yt);;
+
+
+(**
+Prototype: row_equivalent(rowA,rowB)
+Inputs: tuple of 2 rows
+Returned Value: true or false
+Side Effects: none
+Signature: val row_equivalent : ’a list list * ’a list list -> bool = <fun>
+*)
+
+
+let rec row_equivalent (rowA,rowB) = match rowA, rowB with
+    | [], [] -> true
+    | [], _ -> false
+    | _, [] -> false
+    | x::xt, y::yt -> equiv (List.hd rowA, List.hd rowB) && row_equivalent (List.tl rowA, List.tl rowB);;
+
+
+(**
+Prototype: table_equivalent(tableA,tableB)
+Inputs: tuple of 2 tables
+Returned Value: true or false
+Side Effects: none
+Signature: val table_equivalent :
+’a list list list * ’a list list list -> bool = <fun>
+Notes:
+*)
+
+
+
+let rec table_equivalent (tableA,tableB) = match tableA, tableB with
+    | [], [] -> true
+    | [], _ -> false
+    | _, [] -> false
+    | x::xt, y::yt -> row_equivalent (List.hd tableA, List.hd tableB) && table_equivalent (List.tl tableA, List.tl tableB);;
+
+
+(**
+Prototype: valid_production production
+Inputs: a list
+Returned Value: true or false
+Side Effects: none
+Signature: val valid_production : string list -> bool = <fun>
+Notes: true if production is valid format and CNF
+*)
+
+
+
+let check_cap1 str = match String.get str 0 with
+    | 'S' -> true
+    | _ -> String.length str = 1 && (Char.code(String.get str 0) > 64) && (Char.code(String.get str 0) < 91);;
+
+let rec check_cap2 str = match String.length str with
+    | 0 -> false
+    | 1 -> (Char.code(String.get str 0) > 96) && (Char.code(String.get str 0) < 122)
+    | _ -> (Char.code(String.get str 0) > 64) && (Char.code(String.get str 0) < 91) && (Char.code(String.get str 1) > 64) && (Char.code(String.get str 1) < 91);;
+ 
+
+let valid_production production =
+    
+    check_cap1 (List.nth production 0) && check_cap2 (List.nth production 1);;
+
+(**
+Prototype: valid_production_list productionList
+1Inputs: list of productions
+Returned Value: true or false
+Side Effects: none
+10Signature: val valid_production_list : string list list -> bool = <fun>
+Notes:
+*)
+
+ 
+let rec valid_production_list productionList = match productionList with
+    | [] -> true
+    | _ -> valid_production (List.hd productionList) && valid_production_list (List.tl productionList);;
+
+
+

@@ -1,0 +1,70 @@
+Richard Coffey 
+ECE 3520
+C13383509
+
+sde2.log
+
+
+
+
+richard@Thinkpad:~/ece352/sde2$ ledit ocaml
+        OCaml version 4.01.0
+
+# #use "sde2.caml";;
+val get_table_string : int -> 'a list list -> 'a list = <fun>
+val get_table_values_cell : int list * 'a list list list -> 'a list = <fun>
+val one_product : string -> string list -> string list = <fun>
+File "sde2.caml", line 123, characters 21-187:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+[]
+val cell_products : string list list -> string list = <fun>
+val form_row1_cell : 'a * 'a list list -> 'a list = <fun>
+val sort : 'a list -> 'a list = <fun>
+val put : 'a -> 'a list -> 'a list = <fun>
+val equiv : 'a list * 'a list -> bool = <fun>
+val row_equivalent : 'a list list * 'a list list -> bool = <fun>
+val table_equivalent : 'a list list list * 'a list list list -> bool = <fun>
+val check_cap1 : string -> bool = <fun>
+val check_cap2 : string -> bool = <fun>
+val valid_production : string list -> bool = <fun>
+val valid_production_list : string list list -> bool = <fun>
+
+
+# get_table_values_cell ([2;2],sample_table4);;
+- : string list = ["22"]
+# get_table_values_cell ([4;1],sample_table4);;
+- : string list = ["41"]
+# cell_products[["A";"B"];["D";"E"]];;
+- : string list = ["AD"; "AE"; "BD"; "BE"]
+# cell_products[["A"];[]];;               
+- : string list = []
+# cell_products[[];["D"];;       
+- : string list = []
+# form_row1_cell ("c",productions);;
+- : string list = []
+# form_row1_cell ("b",productions);;
+- : string list = ["B"; "C"]
+# equiv([1;5],[1;5]);;        
+- : bool = true
+# equiv([1;6;3;0],[6;3;0;1]);;   
+- : bool = true
+# row_equivalent(row1,row1);;
+- : bool = true
+# row_equivalent(row1mod2,row1mod3);;
+- : bool = false
+# table_equivalent(tablebook2,tablebook2);;
+- : bool = true
+# table_equivalent(tablebook2,tablebook3);;
+- : bool = false
+# valid_production ["A";"S"];;
+- : bool = false
+# valid_production ["AB";"CDE"];;
+- : bool = false
+# valid_production ["A";"b"];;
+- : bool = true
+# valid_production_list prods1;; 
+- : bool = true
+# valid_production_list prods5;;
+- : bool = false
+

@@ -1,0 +1,173 @@
+[1mtrue.[0m
+
+consult('sde1.pro').
+
+
+[1mtrue.[0m
+
+table(sample_table4, Data), get_table_values_cell([2,3],Data,CL).
+
+
+Data = [[["11"], ["21"], ["31"], ["41"]], [["12"], ["22"], ["32"]], [["13"], ["23"]], [["14"]]],
+CL = ["23"].
+
+table(sample_table4, Data), get_table_values_cell([4,1],Data,CL).
+
+
+Data = [[["11"], ["21"], ["31"], ["41"]], [["12"], ["22"], ["32"]], [["13"], ["23"]], [["14"]]],
+CL = ["41"].
+
+table(sample_table4, Data), get_table_values_cell([5,1],Data,CL).
+
+
+[1;31mfalse.[0m
+
+table(book_result, Data), get_table_values_cell([2,3],Data,CL).
+
+
+Data = [[["A"], ["A"], ["B", "C"], ["B", "C"]], [["C"], ["S", "A"], ["S", "B", "A"]], [["C", "A"], ["C", "S", "A"]], [["C", "B", "S", "A"]]],
+CL = ["C", "S", "A"].
+
+decompositions(6,W).
+
+
+[1;31mfalse.[0m
+
+decompositions(0,W).
+
+
+[1;31mfalse.[0m
+
+decompositions(1,W).
+
+
+[1;31mfalse.[0m
+
+decompositions(3,W).
+
+
+[1;31mfalse.[0m
+
+one_product("B",["B"],W).
+
+
+W = ["BB"].
+
+one_product("B",[],W).
+
+
+W = [].
+
+one_product("B",["A","B","C"],W).
+
+
+W = ["BA", "BB", "BC"].
+
+cell_products(["B"],["B"],W).
+
+
+W = ["BB"].
+
+cell_products(["B"],[],W).
+
+
+W = [].
+
+cell_products(["B","C"],["D"],W).
+
+
+W = ["BD", "CD"].
+
+cell_products(["B","C"],["D","W","X"],W).
+
+
+W = ["BD", "BW", "BX", "CD", "CW", "CX"].
+
+productions(book, BookProds), form_row1_cell("a",BookProds,Cell).
+
+
+BookProds = [["S", "AB"], ["S", "BB"], ["A", "CC"], ["A", "AB"], ["A", "a"], ["B", "BB"], ["B", "CA"], ["B"|...], [...|...]|...],
+Cell = ["A"].
+
+productions(book, BookProds), form_row1_cell([],BookProds,Cell).
+
+
+BookProds = [["S", "AB"], ["S", "BB"], ["A", "CC"], ["A", "AB"], ["A", "a"], ["B", "BB"], ["B", "CA"], ["B"|...], [...|...]|...],
+Cell = [].
+
+productions(book, BookProds), form_row1_cell("x",BookProds,Cell).
+
+
+BookProds = [["S", "AB"], ["S", "BB"], ["A", "CC"], ["A", "AB"], ["A", "a"], ["B", "BB"], ["B", "CA"], ["B"|...], [...|...]|...],
+Cell = [].
+
+productions(book, BookProds), form_row1_cell("b",BookProds,Cell).
+
+
+BookProds = [["S", "AB"], ["S", "BB"], ["A", "CC"], ["A", "AB"], ["A", "a"], ["B", "BB"], ["B", "CA"], ["B"|...], [...|...]|...],
+Cell = ["B", "C"].
+
+equivalent(["A", "C"],["A", "C"]).
+
+
+[1mtrue.[0m
+
+equivalent(["A", "C"],["A", "A"]).
+
+
+[1;31mfalse.[0m
+
+equivalent(["A", "C"],["C", "A"]).
+
+
+[1mtrue.[0m
+
+equivalent([],["C", "A"]).
+
+
+[1;31mfalse.[0m
+
+equivalent([],[]).
+
+
+[1mtrue.[0m
+
+row_equivalent([[],[],[]],[[],[],[]]).
+
+
+[1mtrue.[0m
+
+row_equivalent([[],["A"],["B"]],[[],["A"],["B"]]).
+
+
+[1mtrue.[0m
+
+row_equivalent([[],["B"],["A"]],[[],["A"],["B"]]).
+
+
+[1;31mfalse.[0m
+
+row_equivalent([[],["B"],["A","C"]],[[],["B"],["C","A"]]).
+
+
+[1mtrue.[0m
+
+table(book3, T1),table(book_result,T2),table_equivalent(T1,T2).
+
+
+T1 = [[["A"], ["A"], ["B", "C"], ["B", "C"]], [["C"], ["S", "A"], ["S", "B", "A"]], [["C", "A"], ["C", "S", "A"]], [["A", "S", "B", "C"]]],
+T2 = [[["A"], ["A"], ["B", "C"], ["B", "C"]], [["C"], ["S", "A"], ["S", "B", "A"]], [["C", "A"], ["C", "S", "A"]], [["C", "B", "S", "A"]]].
+
+table(book3, T1),table(bookbad1,T2),table_equivalent(T1,T2).
+
+
+[1;31mfalse.[0m
+
+table(book3, T1),table(sample_table,T2),table_equivalent(T1,T2).
+
+
+[1;31mfalse.[0m
+
+halt.
+
+
